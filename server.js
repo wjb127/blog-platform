@@ -10,7 +10,7 @@ const User = require("./models/User"); // User 모델 임포트
 const Category = require("./models/Category"); // Category 모델 임포트
 const Comment = require("./models/Comment"); // Comment 모델 임포트
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // MongoDB 데이터베이스 연결 설정
 mongoose
