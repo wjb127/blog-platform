@@ -11,7 +11,7 @@ const Category = require("./models/Category"); // Category 모델 임포트
 const Comment = require("./models/Comment"); // Comment 모델 임포트
 const app = express();
 //const port = 3001;
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // dotenv를 사용하여 .env 파일에서 환경 변수를 로드 (로컬 개발용)
 if (process.env.NODE_ENV !== 'production') {
