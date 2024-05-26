@@ -12,11 +12,33 @@ const Comment = require("./models/Comment"); // Comment 모델 임포트
 const app = express();
 //const port = 3001;
 const port = process.env.PORT || 3001;
-// MongoDB 데이터베이스 연결 설정
+
+// dotenv를 사용하여 .env 파일에서 환경 변수를 로드 (로컬 개발용)
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
+// 환경 변수에서 MongoDB URI 가져오기
+const mongoUri = process.env.MONGO_URI;
+
 mongoose
-  .connect("mongodb://localhost:27017/BlogPlatform")
-  .then(() => console.log("MongoDB connected")) // 연결 성공 시 로그 출력
-  .catch((err) => console.error("Error connecting to MongoDB:", err)); // 연결 실패 시 오류 로그 출력
+  .connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+  });
+
+
+// MongoDB 데이터베이스 연결 설정
+// mongoose
+//   .connect("mongodb://localhost:27017/BlogPlatform")
+//   .then(() => console.log("MongoDB connected")) // 연결 성공 시 로그 출력
+//   .catch((err) => console.error("Error connecting to MongoDB:", err)); // 연결 실패 시 오류 로그 출력
 
 // 블로그 포스트를 위한 Mongoose 스키마 정의
 // const postSchema = new mongoose.Schema({
