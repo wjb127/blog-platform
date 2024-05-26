@@ -131,23 +131,34 @@ app.get("/posts/:id", async (req, res) => {
 
 // 새로운 포스트 생성
 app.post("/posts", async (req, res) => {
-  const { title, content, author } = req.body; // 요청 본문에서 제목, 내용, 저자 추출
-  const post = new Post({ title, content, author }); // 새 Post 인스턴스 생성
+  const { title, content, username } = req.body; // 요청 본문에서 제목, 내용, 저자 추출
+  console.log("Received post data:", { title, content, username }); // 요청 데이터 확인
+
+  // 유효성 검사
+  if (!title || !content || !username) {
+    console.error("Validation Error: Missing required fields");
+    return res
+      .status(400)
+      .json({ message: "Title, content, and username are required" });
+  }
+  const post = new Post({ title, content, username }); // 새 Post 인스턴스 생성
   try {
     await post.save(); // DB에 저장
+    console.log("Post saved successfully:", post); // 성공 메시지
     res.status(201).json(post); // 생성된 포스트를 응답 (상태 코드 201)
   } catch (error) {
+    console.error("Error saving post:", error); // 에러 메시지 출력
     res.status(400).json({ message: error.message }); // 에러 발생 시 400 상태 코드로 응답
   }
 });
 
 // 포스트 업데이트
 app.put("/posts/:id", async (req, res) => {
-  const { title, content, author } = req.body; // 요청 본문에서 변경될 내용 추출
+  const { title, content, username } = req.body; // 요청 본문에서 변경될 내용 추출
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
-      { title, content, author },
+      { title, content, username },
       { new: true }
     );
     if (!updatedPost) {
